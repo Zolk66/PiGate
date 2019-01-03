@@ -3,25 +3,25 @@ const gpio = require('rpi-gpio');
 const Sensor = class Sensor {
 
     constructor(buzzer, sound, presence) {
-        this.buzzer = buzzer;       //Buzzer actuator (output)
-        this.sound = sound;         //Sound sensor (input)
-        this.presence = presence;   //Presence sensor (input)
+        this._buzzer = buzzer;       //Buzzer actuator (output)
+        this._sound = sound;         //Sound sensor (input)
+        this._presence = presence;   //Presence sensor (input)
         this.setup();
     }
 
     setup() {
-        gpio.setup(buzzer, gpio.DIR_OUT, function() { console.log('Buzzer actuator started') });
-        gpio.setup(sound, gpio.DIR_IN, function() { console.log('Sound sensor started') });
-        gpio.setup(presence, gpio.DIR_IN, function() { console.log('Presense sensor started') });
+        gpio.setup(this._buzzer, gpio.DIR_OUT, function() { console.log('Buzzer actuator started') });
+        gpio.setup(this._sound, gpio.DIR_IN, function() { console.log('Sound sensor started') });
+        gpio.setup(this._presence, gpio.DIR_IN, function() { console.log('Presense sensor started') });
     }
 
     buzzer(comand) {
         if(comand === 'on') {
-            gpio.write(buzzer, 1);  // High Voltage
+            gpio.write(this._buzzer, 1);  // High Voltage
             return 'Buzzer on!';
         }
         else if(comand === 'off'){
-            gpio.write(buzzer, 0);  // Low Voltage
+            gpio.write(this._buzzer, 0);  // Low Voltage
             return 'Buzzer off!';
         }
         else {
@@ -34,6 +34,7 @@ const Sensor = class Sensor {
             console.log('Sound: ' + data);
             return data;
         });
+
     }
 
     presence() {

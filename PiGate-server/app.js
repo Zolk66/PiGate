@@ -15,6 +15,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.get('/', route.main);
 app.get('/buzzer/:comand', route.buzzer);
 app.get('/sound', route.sound);
-app.get('/presence', route.presece);
+app.get('/presence', route.presence);
 
 module.exports = app;

@@ -1,26 +1,33 @@
-const sensors = require('./sensors');
+const Sensor = require('./sensors').Sensor;
 
-let gpio = new sensors.Sensor(11, 13, 15);
+let gpio = new Sensor(11, 13, 15);
 
 let status = {
     sound: '',
     presence: ''
 };
 
-exports.main = function (req, res) {
+const main = function main (req, res) {
     status.sound = gpio.sound();
     status.presence = gpio.presence();
     res.send( status );
 };
 
-exports.buzzer = function (req, res) {
+const buzzer = function buzzer (req, res) {
     res.send( gpio.buzzer(req.params.comand) );
 };
 
-exports.sound = function (req, res) {
+const sound = function sound (req, res) {
     res.send( gpio.sound() );
 };
 
-exports.presence = function (req, res) {
+const presence = function presence (req, res) {
     res.send( gpio.presence() );
+};
+
+module.exports = {
+    main: main,
+    buzzer: buzzer,
+    sound: sound,
+    presence: presence
 };
