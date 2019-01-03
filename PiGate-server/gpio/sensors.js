@@ -1,7 +1,12 @@
 const gpio = require('rpi-gpio');
 
-let pin = 7;   //Number of the pin at the GPIO
-gpio.setup(pin, gpio.DIR_OUT, function() { console.log('GPIO started') });
+let buzzer = 16;    //Buzzer actuator (output)
+let presence = 20;  //Presence sensor (input)
+let sound = 21;     //Sound sensor (input)
+
+gpio.setup(buzzer, gpio.DIR_OUT, function() { console.log('Buzzer actuator started') });
+gpio.setup(presence, gpio.DIR_IN, function() { console.log('Presense sensor started') });
+gpio.setup(sound, gpio.DIR_IN, function() { console.log('Sound sensor started') });
 
 //gpio.write(pin, 0);	// Low Voltage
 //gpio.write(pin, 1);	// High Voltage
@@ -23,4 +28,12 @@ exports.LED = function (req, res) {
     else {
         res.send('Comand not found');
     }
+};
+
+exports.sound = function (req, res) {
+    gpio.read(sound, function (err, data) {
+        console.log(err);
+        console.log(data);
+        res.send(data);
+    });
 };
