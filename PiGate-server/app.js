@@ -2,7 +2,7 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-const sensor = require('./gpio/sensors');
+const route = require('./controller/routes');
 
 let app = express();
 
@@ -12,9 +12,9 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/', sensor.hello);
-app.get('/buzzer/:comand', sensor.buzzer);
-app.get('/sound', sensor.sound);
-app.get('/presence', sensor.presece);
+app.get('/', route.main);
+app.get('/buzzer/:comand', route.buzzer);
+app.get('/sound', route.sound);
+app.get('/presence', route.presece);
 
 module.exports = app;
