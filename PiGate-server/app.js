@@ -13,6 +13,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', sensor.hello);
+app.get('/buzzer/:comand', sensor.buzzer);
 app.get('/sound', sensor.sound);
+app.get('/presence', sensor.presece);
 
 module.exports = app;
