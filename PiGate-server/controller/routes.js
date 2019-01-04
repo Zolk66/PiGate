@@ -1,6 +1,6 @@
-const sensors = require('./sensors');
+const Sensor = require('./sensors').Sensor;
 
-let gpio = new sensors.Sensor(11, 13, 15);
+let gpio = new Sensor(11, 13, 15);
 let timeResponse = 500; // miliseconds
 
 const main = function main (req, res) {
