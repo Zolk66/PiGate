@@ -1,21 +1,22 @@
-const Sensor = require('./sensors').Sensor;
+const sensors = require('./sensors');
 
-let gpio = new Sensor(11, 13, 15);
+let gpio = new sensors.Sensor(11, 13, 15);
 
 const main = function main (req, res) {
     res.send( gpio.stauts );
 };
 
 const buzzer = function buzzer (req, res) {
-    res.send( gpio.stauts.sound );
+    res.send( gpio.buzzer(req.params.comand) );
 };
 
 const sound = function sound (req, res) {
-    res.send( gpio.stauts.sound );
+    gpio.sound();
+    setTimeout(function () { res.send( gpio.stauts.sound ) }, 500);
 };
 
 const presence = function presence (req, res) {
-    res.send( gpio.stauts.presence );
+    setTimeout(function () { res.send( gpio.stauts.presence ) }, 500);
 };
 
 module.exports = {

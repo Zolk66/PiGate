@@ -16,23 +16,6 @@ const Sensor = class Sensor {
         gpio.setup(this._buzzer, gpio.DIR_OUT, function() { console.log('Buzzer actuator started') });
         gpio.setup(this._sound, gpio.DIR_IN, function() { console.log('Sound sensor started') });
         gpio.setup(this._presence, gpio.DIR_IN, function() { console.log('Presense sensor started') });
-
-        this.read(true);
-    }
-
-    read(working) {
-        while (working) {
-            let self = this;
-            gpio.read(this._presence, function (err, data) {
-                console.log('Presence: ' + data);
-                self.stauts.presence = data;
-            });
-
-            gpio.read(this._sound, function (err, data) {
-                console.log('Sound: ' + data);
-                self.stauts.sound = data;
-            });
-        }
     }
 
     buzzer(comand) {
@@ -51,8 +34,22 @@ const Sensor = class Sensor {
         }
     }
 
+    sound() {
+        let self = this;
+        gpio.read(this._presence, function (err, data) {
+            console.log('Presence: ' + data);
+            self.stauts.presence = true;
+        });
+    }
+
+    presence() {
+        gpio.read(this._sound, function (err, data) {
+            console.log('Sound: ' + data);
+            self.stauts.sound = data;
+        });
+    }
+
     destroy() {
-        this.read(false);
         gpio.destroy(function() { console.log('GPIO stopped') });
     }
 };
