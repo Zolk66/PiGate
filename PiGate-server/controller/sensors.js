@@ -6,6 +6,9 @@ const Sensor = class Sensor {
         this._buzzer = buzzer;       //Buzzer actuator (output)
         this._sound = sound;         //Sound sensor (input)
         this._presence = presence;   //Presence sensor (input)
+
+        this.stauts = { buzzer: false, sound: false, presence: false };
+
         this.setup();
     }
 
@@ -13,15 +16,34 @@ const Sensor = class Sensor {
         gpio.setup(this._buzzer, gpio.DIR_OUT, function() { console.log('Buzzer actuator started') });
         gpio.setup(this._sound, gpio.DIR_IN, function() { console.log('Sound sensor started') });
         gpio.setup(this._presence, gpio.DIR_IN, function() { console.log('Presense sensor started') });
+
+        this.read(true);
+    }
+
+    read(working) {
+        while (working) {
+            let self = this;
+            gpio.read(this._presence, function (err, data) {
+                console.log('Presence: ' + data);
+                self.stauts.presence = data;
+            });
+
+            gpio.read(this._sound, function (err, data) {
+                console.log('Sound: ' + data);
+                self.stauts.sound = data;
+            });
+        }
     }
 
     buzzer(comand) {
         if(comand === 'on') {
             gpio.write(this._buzzer, 1);  // High Voltage
+            this.stauts.buzzer = true;
             return 'Buzzer on!';
         }
         else if(comand === 'off'){
             gpio.write(this._buzzer, 0);  // Low Voltage
+            this.stauts.buzzer = false;
             return 'Buzzer off!';
         }
         else {
@@ -29,21 +51,8 @@ const Sensor = class Sensor {
         }
     }
 
-    sound() {
-        gpio.read(this._sound, function (err, data) {
-            console.log('Sound: ' + data);
-            return data;
-        });
-    }
-
-    presence() {
-        gpio.read(this._presence, function (err, data) {
-            console.log('Presence: ' + data);
-            return data;
-        });
-    }
-
     destroy() {
+        this.read(false);
         gpio.destroy(function() { console.log('GPIO stopped') });
     }
 };
