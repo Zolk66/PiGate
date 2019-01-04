@@ -1,9 +1,12 @@
 const sensors = require('./sensors');
 
 let gpio = new sensors.Sensor(11, 13, 15);
+let timeResponse = 500; // miliseconds
 
 const main = function main (req, res) {
-    res.send( gpio.stauts );
+    gpio.sound();
+    gpio.presence();
+    setTimeout(function () { res.send( gpio.stauts ) }, timeResponse);
 };
 
 const buzzer = function buzzer (req, res) {
@@ -12,11 +15,12 @@ const buzzer = function buzzer (req, res) {
 
 const sound = function sound (req, res) {
     gpio.sound();
-    setTimeout(function () { res.send( gpio.stauts.sound ) }, 500);
+    setTimeout(function () { res.send( gpio.stauts.sound ) }, timeResponse);
 };
 
 const presence = function presence (req, res) {
-    setTimeout(function () { res.send( gpio.stauts.presence ) }, 500);
+    gpio.presence();
+    setTimeout(function () { res.send( gpio.stauts.presence ) }, timeResponse);
 };
 
 module.exports = {

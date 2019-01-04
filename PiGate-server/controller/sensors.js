@@ -36,16 +36,17 @@ const Sensor = class Sensor {
 
     sound() {
         let self = this;
-        gpio.read(this._presence, function (err, data) {
-            console.log('Presence: ' + data);
-            self.stauts.presence = true;
+        gpio.read(this._sound, function (err, data) {
+            console.log('Sound: ' + data);
+            self.stauts.sound = data;
         });
     }
 
     presence() {
-        gpio.read(this._sound, function (err, data) {
-            console.log('Sound: ' + data);
-            self.stauts.sound = data;
+        let self = this;
+        gpio.read(this._presence, function (err, data) {
+            console.log('Presence: ' + data);
+            self.stauts.presence = data;
         });
     }
 
